@@ -60,19 +60,21 @@ put empty into sDBresult["fieldNumbers"]
 --| Author: rabit
 --| Version:  1.2
 --| Created: 29-09-09
---| Last Mod: 15-02-14
+--| Last Mod: 01-04-17
 --| Requires: rigFetchDBdriverSetting(), _rigDataSeek(), _rigFetchAssoc, rigListFields(), rigLogMessage
 --|
 --| Summary: Query result as array.
 --| 
 --| Format:  rigDBresult()
 --|
---| Parameters: --
+--| Parameters: boolean <pAssoc> reference columns by name
 --|
 --| Return: array
 ----------------------------------------------------------------------*/
 
 function rigDBresult
+	if not pAssoc then put false into pAssoc
+
 	if sDBresult["resultarray"] is an array then
 		return sDBresult["resultarray"]
 	end if
@@ -93,7 +95,7 @@ function rigDBresult
 	--if tCacheOn is not TRUE then
 		get _rigDataSeek(tResultID, 0)
 		put empty into tTemp
-		_rigFetchAssoc tResultID, tTemp
+		_rigFetchAssoc tResultID, tTemp, pAssoc
 		put the result into tError
 		put tTemp into sDBresult["resultarray"]
 
