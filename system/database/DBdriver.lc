@@ -377,7 +377,7 @@ end rigDbVersion
 --| Author: rabit
 --| Version:  1.8
 --| Created: 09-07-09
---| Last Mod: 21-12-14
+--| Last Mod: 01-04-17
 --| Requires: rigLogMessage, rigDbDisplayError, rigLoadRdriver, rigCompileBinds, rigSimpleQuery(), rigDbErrorMessage(), rigListFields()
 --|   rigTransComplete(), rigIsWriteType(), _rigCacheInit(), rigDeleteDBcacheFiles, rigNumRows(), rigWriteSQLcache(), rigDbRedirectOnError, rigNumToCodepoint()
 --|
@@ -386,15 +386,19 @@ end rigDbVersion
 --|            upon successful execution of a "write" type query. Returns boolean
 --|            FALSE upon failure, and if the dbdebug variable in the database config file is set to TRUE
 --|            will raise an error.
---| 
---| Format:  rigDbQuery(param1, param2)
 --|
---| Parameters: string <pSQL> the sql query string, array <pBinds> array of binding data
+--| Bob Hall added pAssoc boolean parameter. True means query results returned as
+--| associative array. No value/false results are numberic by field number.
+--| 
+--| Format:  rigDbQuery(param1, param2, param3)
+--|
+--| Parameters: string <pSQL> the sql query string, array <pBinds> array of binding data,
+--|             boolean <pAssoc> return query results as Associative array using Column names
 --|
 --| Return: mixed
 ----------------------------------------------------------------------*/
 
-function rigDbQuery pSQL pBinds
+function rigDbQuery pSQL pBinds pAssoc
 	if pBinds is not an array and pBinds is "" then
 		put FALSE into tBinds
 	else
@@ -569,7 +573,7 @@ function rigDbQuery pSQL pBinds
 	put sDBdriverSettings["resultid"] into tRES["resultid"]
 	# CLEAR RESULT ARRAY
 	rigDbResetResultValue "resultarray"
-	put rigDBresult() into tRES["resultarray"]
+	put rigDBresult(pAssoc) into tRES["resultarray"]
 
 	if sDBdriverSettings["dbdriver"] is "oci8" then
 		put sDBdriverSettings["stmtid"] into tRES["stmtid"]
