@@ -72,13 +72,13 @@ put empty into sDBresult["fieldNumbers"]
 --| Return: array
 ----------------------------------------------------------------------*/
 
-function rigDBresult
+function rigDBresult pAssoc
 	if not pAssoc then put false into pAssoc
 
-	if sDBresult["resultarray"] is an array then
+	if (sDBresult["resultarray"] is an array) and (not pAssoc) then
 		return sDBresult["resultarray"]
 	end if
-
+	
 	# IN THE EVENT THAT QUERY CACHING IS ON THE RESULT_ID VARIABLE 
 	# WILL RETURN FALSE SINCE THERE ISN'T A VALID SQL RESOURCE SO 
 	# WE'LL SIMPLY RETURN EMPTY.
@@ -93,14 +93,17 @@ function rigDBresult
 	--put rigFetchActiveGroup() into tSettingsGroup
 	--put rigFetchDBsetting(tSettingsGroup,  "cacheon") into tCacheOn
 	--if tCacheOn is not TRUE then
-		get _rigDataSeek(tResultID, 0)
-		put empty into tTemp
-		_rigFetchAssoc tResultID, tTemp, pAssoc
-		put the result into tError
-		put tTemp into sDBresult["resultarray"]
+	get _rigDataSeek(tResultID, 0)
+	put empty into tTemp
+	_rigFetchAssoc tResultID, tTemp, pAssoc
+	put the result into tError
+	put tTemp into sDBresult["resultarray"]
 
-		put rigListFields(tResultID) into sDBresult["fieldNames"] -- variance
-		put rigFieldNumbers(sDBresult["fieldNames"]) into sDBresult["fieldNumbers"] -- variance
+   ## Bob Hall 01-04-17
+	## Commented out 2 calls below. Result is not used in the
+	## function nor are the results returned from function.
+	##put rigListFields(tResultID) into sDBresult["fieldNames"] -- variance
+	##put rigFieldNumbers(sDBresult["fieldNames"]) into sDBresult["fieldNumbers"] -- variance
 
 	--else
 		--put empty into sDBresult["resultarray"]
