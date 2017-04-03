@@ -99,11 +99,8 @@ function rigDBresult pAssoc
 	put the result into tError
 	put tTemp into sDBresult["resultarray"]
 
-   ## Bob Hall 01-04-17
-	## Commented out 2 calls below. Result is not used in the
-	## function nor are the results returned from function.
-	##put rigListFields(tResultID) into sDBresult["fieldNames"] -- variance
-	##put rigFieldNumbers(sDBresult["fieldNames"]) into sDBresult["fieldNumbers"] -- variance
+   put rigListFields(tResultID) into sDBresult["fieldNames"] -- variance
+	put rigFieldNumbers(sDBresult["fieldNames"]) into sDBresult["fieldNumbers"] -- variance
 
 	--else
 		--put empty into sDBresult["resultarray"]
